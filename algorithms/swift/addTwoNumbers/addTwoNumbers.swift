@@ -29,50 +29,80 @@
 */
 class Solution {
     func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-        var head: ListNode?
-        var curNode: ListNode?
+        let head: ListNode = ListNode(0)
+        var curNode: ListNode = head
         
         var carry: Int = 0
-        var curl1 = l1
-        var curl2 = l2
+        var p = l1
+        var q = l2
         
-        let appendNode: (ListNode) -> Void = { (node) in
-            if head == nil {
-                head = node
-                curNode = node
-            } else {
-                curNode!.next = node
-                curNode = node
-            }
-        }
-        
-        let handleBitAddResult: (Int) -> Void = { res in
-            let nv = res % 10
-            carry = res / 10
+        while p != nil || q != nil {
+            let x = p?.val ?? 0
+            let y = q?.val ?? 0
             
-            appendNode(ListNode(nv))
-        }
-        
-        while curl1 != nil || curl2 != nil {
-            defer {
-                curl1 = curl1?.next
-                curl2 = curl2?.next
-            }
+            let sum = x + y + carry
             
-            if let c1 = curl1 {
-                if let c2 = curl2 {
-                    handleBitAddResult(c1.val + c2.val + carry)
-                } else {
-                    handleBitAddResult(c1.val + carry)
-                }
-            } else if let c2 = curl2 {
-                handleBitAddResult(c2.val + carry)
-            }
+            carry = sum / 10
+            
+            curNode.next = ListNode(sum % 10)
+            curNode = curNode.next!
+            
+            p = p?.next
+            q = q?.next
         }
         
-        if carry != 0 {
-            appendNode(ListNode(carry))
+        if carry == 1 {
+            curNode.next = ListNode(carry)
+            curNode = curNode.next!
         }
-        return head
+        return head.next
     }
+    
+//    func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+//        var head: ListNode?
+//        var curNode: ListNode?
+//
+//        var carry: Int = 0
+//        var curl1 = l1
+//        var curl2 = l2
+//
+//        let appendNode: (ListNode) -> Void = { (node) in
+//            if head == nil {
+//                head = node
+//                curNode = node
+//            } else {
+//                curNode!.next = node
+//                curNode = node
+//            }
+//        }
+//
+//        let handleBitAddResult: (Int) -> Void = { res in
+//            let nv = res % 10
+//            carry = res / 10
+//
+//            appendNode(ListNode(nv))
+//        }
+//
+//        while curl1 != nil || curl2 != nil {
+//            defer {
+//                curl1 = curl1?.next
+//                curl2 = curl2?.next
+//            }
+//
+//            if let c1 = curl1 {
+//                if let c2 = curl2 {
+//                    handleBitAddResult(c1.val + c2.val + carry)
+//                } else {
+//                    handleBitAddResult(c1.val + carry)
+//                }
+//            } else if let c2 = curl2 {
+//                handleBitAddResult(c2.val + carry)
+//            }
+//        }
+//
+//        if carry != 0 {
+//            appendNode(ListNode(carry))
+//        }
+//        return head
+//    }
 }
